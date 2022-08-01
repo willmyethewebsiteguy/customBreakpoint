@@ -10,7 +10,6 @@
     editButton: '[data-test="frameToolbarEdit"]'
   }
 
-
   function handleEvent() {
     if (window.self == window.top) return;
     
@@ -38,21 +37,11 @@
     function removeCustomMobileView() {
       previewContainer.style.width = '';
     }
-    
-    function addInput() {
-      
-    }
-
 
     mobileButton.addEventListener('click', addCustomMobileView)
     desktopButton.addEventListener('click', removeCustomMobileView)
     editButton.addEventListener('click', removeCustomMobileView)
-    
-    console.log(breakpoint);
-    console.log(previewEl);
-    console.log(previewContainer);
   }
 
-  
   handleEvent()
 }())
