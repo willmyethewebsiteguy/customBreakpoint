@@ -12,7 +12,7 @@
 
   function handleEvent() {
     if (window.self == window.top) return;
-    
+
     let sqsEditor = window.top.document,
         self = window.self.document;
 
@@ -22,7 +22,7 @@
 
     let previewEl = sqsEditor.querySelector(settings.previewViewport),
         previewContainer = previewEl.parentElement;
-    
+
     let mobileButton = sqsEditor.querySelector(settings.mobileButton),
         desktopButton = sqsEditor.querySelector(settings.desktopButton),
         editButton = sqsEditor.querySelector(settings.editButton);
@@ -31,25 +31,40 @@
       breakpointElStyles = window.getComputedStyle(breakpointEl),
         breakpoint = breakpointElStyles.getPropertyValue('--sqs-edit-mode-breakpoint');
     }
+
     function addCustomMobileView() {
-      self.head.insertAdjacentHTML('afterbegin', `
-      <style id="wm-drag-handle">
-        .fluid-engine.is-editing > [data-onboarding="drag-handle"]:last-child{
-          right: calc(50% - 150px) !important;
-        }
-      <style>`);
       getBreakpoint();
       previewContainer.style.width = breakpoint;
+      window.setTimeout(function() {
+        sqsEditor.querySelector('html').style.setProperty('--frame-width', breakpoint);
+        sqsEditor.querySelector('html').style.setProperty('--wm-frame-width', breakpoint);
+      }, 501);
+
     }
     function removeCustomMobileView() {
-      self.querySelector('head #wm-drag-handle').remove();
-      previewContainer.style.width = '';
+      previewContainer.style.width = '100%';
+      window.setTimeout(function() {
+        sqsEditor.querySelector('html').style.setProperty('--frame-width', window.self.innerWidth + 'px');
+        sqsEditor.querySelector('html').style.setProperty('--wm-frame-width', window.self.innerWidth + 'px');
+        console.log()
+      }, 501);
+    }
+    
+    function editButtonClick() {
+      function checkMode() {
+        if (!self.body.querySelector('.sqs-edit-mode-active')) return;
+        
+        if(sqsEditor.querySelector('[aria-controls="mobile-tab"][aria-selected="true"]')){
+          addCustomMobileView()
+        }
+      }
+      window.setTimeout(checkMode(), 301);
     }
 
     mobileButton.addEventListener('click', addCustomMobileView)
     desktopButton.addEventListener('click', removeCustomMobileView)
-    editButton.addEventListener('click', removeCustomMobileView)
+    editButton.addEventListener('click', editButtonClick)
   }
 
   handleEvent()
-}())
+}());
