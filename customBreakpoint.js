@@ -13,7 +13,8 @@
   function handleEvent() {
     if (window.self == window.top) return;
     
-    let sqsEditor = window.top.document;
+    let sqsEditor = window.top.document,
+        self = window.self.document;
 
     let breakpointEl = document.querySelector('html'),
         breakpointElStyles = window.getComputedStyle(breakpointEl),
@@ -31,10 +32,17 @@
         breakpoint = breakpointElStyles.getPropertyValue('--sqs-edit-mode-breakpoint');
     }
     function addCustomMobileView() {
+      self.head.insertAdjacentHTML('afterbegin', `
+      <style id="wm-drag-handle">
+        .fluid-engine.is-editing > [data-onboarding="drag-handle"]:last-child{
+          right: calc(50% - 150px) !important;
+        }
+      <style>`);
       getBreakpoint();
       previewContainer.style.width = breakpoint;
     }
     function removeCustomMobileView() {
+      self.querySelector('head #wm-drag-handle').remove();
       previewContainer.style.width = '';
     }
 
