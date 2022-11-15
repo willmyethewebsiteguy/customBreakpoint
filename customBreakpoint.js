@@ -1,7 +1,7 @@
 /* ==========
  * SQS Edit Mode Breakpoint
  * This Code is licensed by Will-Myers.com 
-========== */
+=========== */
 (function(){  
   const settings = {
     previewViewport: '.preview-viewport',
@@ -46,19 +46,16 @@
       window.setTimeout(function() {
         sqsEditor.querySelector('html').style.setProperty('--frame-width', window.self.innerWidth + 'px');
         sqsEditor.querySelector('html').style.setProperty('--wm-frame-width', window.self.innerWidth + 'px');
-        console.log()
       }, 501);
     }
     
     function editButtonClick() {
       function checkMode() {
-        if (!self.body.querySelector('.sqs-edit-mode-active')) return;
-        
-        if(sqsEditor.querySelector('[aria-controls="mobile-tab"][aria-selected="true"]')){
+        if(sqsEditor.querySelector('[aria-controls="phone-tab"][aria-selected="true"]')){
           addCustomMobileView()
         }
       }
-      window.setTimeout(checkMode(), 301);
+      window.setTimeout(checkMode(), 501);
     }
 
     mobileButton.addEventListener('click', addCustomMobileView)
