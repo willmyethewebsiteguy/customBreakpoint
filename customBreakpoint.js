@@ -49,18 +49,38 @@
       }, 501);
     }
     
-    function editButtonClick() {
-      function checkMode() {
-        if(sqsEditor.querySelector('[aria-controls="phone-tab"][aria-selected="true"]')){
-          addCustomMobileView()
+    function checkMode() {
+      if(sqsEditor.querySelector('[aria-controls="phone-tab"][aria-selected="true"]')){
+        addCustomMobileView()
+      }
+    }
+
+    // MutationObserver callback function
+    function mutationCallback(mutationsList) {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'attributes') {
+          if (mutation.target.classList.contains('sqs-edit-mode-active') ||
+              (mutation.target.id === 'footer-sections' && mutation.target.dataset.isEditing === 'true')) {
+            checkMode();
+          }
         }
       }
-      window.setTimeout(checkMode(), 501);
+    }
+
+    // Initialize MutationObserver
+    let observer = new MutationObserver(mutationCallback);
+
+    // Start observing the body for attribute changes
+    observer.observe(document.body, { attributes: true });
+
+    // Optionally observe #footer-sections for attribute changes
+    let footerSections = document.getElementById('footer-sections');
+    if (footerSections) {
+      observer.observe(footerSections, { attributes: true });
     }
 
     mobileButton.addEventListener('click', addCustomMobileView)
     desktopButton.addEventListener('click', removeCustomMobileView)
-    editButton.addEventListener('click', editButtonClick)
   }
 
   handleEvent()
